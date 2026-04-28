@@ -1,0 +1,3 @@
+username,password,expected
+validtest100@gmail.com,validpass,valid
+wrong@email.com,wrongpass,invalid
