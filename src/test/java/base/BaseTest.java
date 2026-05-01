@@ -4,11 +4,13 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import configuration.ConfigReader;
 import io.qameta.allure.Attachment;
+
 
 public class BaseTest {
     protected WebDriver driver;
@@ -17,9 +19,9 @@ public class BaseTest {
     @BeforeMethod
     public void setup() {
 
-        System.setProperty("webdriver.chrome.driver","chromedriver.exe");
+        System.setProperty("webdriver.edge.driver","msedgedriver.exe");
 
-        driver = new ChromeDriver();
+        driver = new EdgeDriver();
         driver.manage().window().maximize();
 
         driver.get(config.get("url"));

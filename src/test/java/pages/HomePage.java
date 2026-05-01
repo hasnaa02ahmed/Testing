@@ -22,6 +22,11 @@ public class HomePage {
     By euroButton = By.name("EUR");
 
     By tabletsMenu = By.linkText("Tablets");
+    By phonesMenu = By.linkText("Phones & PDAs");
+
+    By searchBox = By.name("search");
+    By searchBtn = By.cssSelector("button.btn.btn-default");
+
 
     public void goToRegister(){
 
@@ -47,5 +52,14 @@ public class HomePage {
 
     public void goToTablets() {
         driver.findElement(tabletsMenu).click();
+    }
+
+    public void navigateToPhones() {
+        driver.findElement(phonesMenu).click();
+    }
+
+    public void search(String text) {
+        driver.findElement(searchBox).sendKeys(text);
+        driver.findElement(searchBtn).click();
     }
 }
