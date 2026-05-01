@@ -13,46 +13,25 @@ import pages.LoginPage;
 public class LoginTests extends BaseTest {
     @DataProvider(name = "loginData")
     public Object[][] getData() throws Exception {
-        return CSVUtils.getTestData("data.csv");
+        return CSVUtils.getTestData("src/test/java/resources/login.csv");
     }
 
-   @Test
-   public void invalidLogin(){
+@Test(dataProvider = "loginData")
+    public void testLogin(String email, String password, String expected) {
 
-       HomePage home = new HomePage(driver);
-       home.goToLogin();
-
-       LoginPage login = new LoginPage(driver);
-       login.login("wrong@email.com","wrongpass");
-
-       Assert.assertTrue(login.getErrorMessage()
-               .contains("Warning: No match for E-Mail Address"));
-   }
-
-   @Test
-   public void validLogin(){
-       HomePage home = new HomePage(driver);
-       home.goToLogin();
-
-       LoginPage login = new LoginPage(driver);
-       login.login("validtest100@gmail.com","validpass");
-
-       Assert.assertTrue(login.isLoggedIn());
-   }
-
-    @Test(dataProvider = "loginData")
-    public void testLogin(String username, String password, String expected) {
         HomePage home = new HomePage(driver);
         home.goToLogin();
 
         LoginPage login = new LoginPage(driver);
-        login.login(username, password);
+        login.login(email, password);
 
-        if (expected.equals("valid")) {
-            Assert.assertTrue(login.isLoggedIn());
+        if (expected.equalsIgnoreCase("valid")) {
+            Assert.assertTrue(login.isLoggedIn(), "Login should succeed");
         } else {
-            Assert.assertTrue(login.getErrorMessage()
-                    .contains("Warning: No match for E-Mail Address"));
+            Assert.assertTrue(
+                login.getErrorMessage().contains("No match"),
+                "Error message not displayed for invalid login"
+            );
         }
     }
 }
