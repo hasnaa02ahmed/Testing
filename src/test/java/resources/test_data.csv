@@ -1,0 +1,5 @@
+scenario,input_value,category,expected_result
+sort_ascending,Name (A - Z),Phones & PDAs,success
+sort_descending,Name (Z - A),Phones & PDAs,success
+search_keyword,Mac,All,Mac
+search_subcategories,Apple,Components,Apple Cinema 30

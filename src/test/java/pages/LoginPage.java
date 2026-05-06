@@ -30,9 +30,10 @@ public class LoginPage {
     public boolean isLoggedIn() {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            WebElement accountBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='My Account']")));
-            accountBtn.click();
-            return driver.findElement(logoutBtn).isDisplayed();
+
+            wait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.cssSelector("a[href*='route=account/logout']")));
+            return true;
         } catch (Exception e) {
             return false;
         }
