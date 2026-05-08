@@ -60,8 +60,15 @@ public class CheckoutPage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 
-    public void fillNewBillingAddress(String fn, String ln, String add, String city, String post, String country, String region) {
-        wait.until(ExpectedConditions.elementToBeClickable(newAddressRadio)).click();
+    public void fillNewBillingAddress(String fn, String ln, String add,
+                                      String city, String post,
+                                      String country, String region) {
+
+            WebElement radio = wait.until(
+                    ExpectedConditions.elementToBeClickable(newAddressRadio));
+            radio.click();
+
+
         driver.findElement(firstNameField).sendKeys(fn);
         driver.findElement(lastNameField).sendKeys(ln);
         driver.findElement(addressField).sendKeys(add);
@@ -69,13 +76,19 @@ public class CheckoutPage {
         driver.findElement(postcodeField).sendKeys(post);
 
         new Select(driver.findElement(countryDropdown)).selectByVisibleText(country);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//select[@id='input-payment-zone']/option[text()='" + region + "']")));
+        wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//select[@id='input-payment-zone']/option[text()='" + region + "']")));
         new Select(driver.findElement(zoneDropdown)).selectByVisibleText(region);
 
         driver.findElement(continueBillingBtn).click();
     }
-    public void fillNewShippingAddress(String fn, String ln, String add, String city, String post, String country, String region) {
-        wait.until(ExpectedConditions.elementToBeClickable(newShippingAddressRadio)).click();
+    public void fillNewShippingAddress(String fn, String ln, String add,
+                                       String city, String post,
+                                       String country, String region) {
+        WebElement radio = wait.until(
+                    ExpectedConditions.elementToBeClickable(newShippingAddressRadio));
+            radio.click();
+
 
         driver.findElement(shipFirstNameField).sendKeys(fn);
         driver.findElement(shipLastNameField).sendKeys(ln);
@@ -84,16 +97,12 @@ public class CheckoutPage {
         driver.findElement(shipPostcodeField).sendKeys(post);
 
         new Select(driver.findElement(shipCountryDropdown)).selectByVisibleText(country);
-
         wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//select[@id='input-shipping-zone']/option[text()='" + region + "']")));
         new Select(driver.findElement(shipZoneDropdown)).selectByVisibleText(region);
 
         driver.findElement(continueShippingAddressBtn).click();
     }
-
-
-
 
     public void addCommentAndContinue(String comment) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(commentArea)).sendKeys(comment);

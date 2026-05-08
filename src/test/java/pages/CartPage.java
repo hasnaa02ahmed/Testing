@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -23,9 +24,6 @@ public class CartPage {
 
     By successAlert  = By.cssSelector(".alert-success");
 
-    By totalRows = By.cssSelector("#content table.table tfoot tr, " +
-            "#content .row table tr");
-
     public CartPage(WebDriver driver) {
         this.driver = driver;
         this.wait   = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -47,7 +45,6 @@ public class CartPage {
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(cartPageTable));
     }
-
     public boolean isProductInCart(String partialName) {
         List<WebElement> rows = driver.findElements(cartRows);
         for (WebElement row : rows) {
@@ -127,7 +124,6 @@ public class CartPage {
     }
     public boolean hasStockError() {
         try {
-            // Find the red alert banner
             WebElement alert = driver.findElement(By.cssSelector(".alert-danger"));
             return alert.getText().contains("Products marked with *** are not available");
         } catch (org.openqa.selenium.NoSuchElementException e) {
@@ -148,5 +144,8 @@ public class CartPage {
             }
         }
         return sum;
+    }
+    public String getMiniCartText() {
+        return driver.findElement(By.id("cart-total")).getText();
     }
 }

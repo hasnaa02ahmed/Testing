@@ -1,5 +1,4 @@
 package base;
-
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -11,17 +10,18 @@ import configuration.ConfigReader;
 import io.qameta.allure.Attachment;
 
 public class BaseTest {
-    protected WebDriver driver;
+    public WebDriver driver;
+    public WebDriver getDriver() {
+        return driver;
+    }
     protected ConfigReader config = new ConfigReader();
 
     @BeforeMethod
     public void setup() {
         config = new ConfigReader();
 
-        // REMOVE THIS LINE:
         // System.setProperty("webdriver.chrome.driver","chromedriver.exe");
 
-        // USE THIS INSTEAD:
         // This automatically checks your Chrome version and downloads the matching driver
         io.github.bonigarcia.wdm.WebDriverManager.chromedriver().setup();
 

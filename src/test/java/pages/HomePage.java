@@ -39,16 +39,14 @@ public class HomePage {
         WebElement topMenu = wait.until(ExpectedConditions.elementToBeClickable(By.linkText(categoryName)));
         topMenu.click();
 
-
         By showAllLocator = By.linkText("Show All" + categoryName);
 
-        try {
+      //  try {
             WebElement showAll = wait.until(ExpectedConditions.visibilityOfElementLocated(showAllLocator));
             showAll.click();
-        } catch (Exception e) {
+   //     } catch (Exception e) {
 
-            topMenu.click();
-        }
+          //  topMenu.click();}
     }
 
     public void goToRegister(){
