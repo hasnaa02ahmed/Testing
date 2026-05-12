@@ -14,7 +14,7 @@ public class BaseTest {
     public WebDriver getDriver() {
         return driver;
     }
-    protected ConfigReader config = new ConfigReader();
+    public ConfigReader config = new ConfigReader();
 
     @BeforeMethod
     public void setup() {

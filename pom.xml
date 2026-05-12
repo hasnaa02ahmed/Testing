@@ -13,7 +13,6 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <allure.version>2.24.0</allure.version>
-        <!-- ✅ Declare version here so it's used in both dependency and argLine -->
         <aspectj.version>1.9.21</aspectj.version>
     </properties>
 
@@ -38,7 +37,6 @@
             <version>${allure.version}</version>
         </dependency>
 
-        <!-- ✅ CHANGED: 1.9.22 → 1.9.21 (ships with allure-testng:2.24.0) -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
@@ -52,10 +50,14 @@
             <scope>test</scope>
         </dependency>
 
+
+
     </dependencies>
 
     <build>
         <plugins>
+
+            <!-- Allure Maven plugin — run "mvn allure:serve" to open the report -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
@@ -66,34 +68,31 @@
                 </configuration>
             </plugin>
 
+            <!--
+                Maven Surefire - ONE block only.
+                Merged: argLine (AspectJ agent) + suiteXmlFiles (testng.xml).
+                Both must live in the same <configuration> block.
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <!-- ✅ ADDED: required for Allure's @Attachment and aspects to work -->
+
+                    <!-- AspectJ agent - required for Allure @Step to appear in the report -->
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-                <configuration>
-                    <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                    </argLine>
-                    <!-- ADD THIS -->
+
+                    <!-- testng.xml - registers AllureListener and lists test classes -->
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
+
                 </configuration>
             </plugin>
 
         </plugins>
-
     </build>
 
 </project>
