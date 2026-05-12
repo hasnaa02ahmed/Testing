@@ -16,6 +16,7 @@ public class RegistrationTests extends BaseTest {
     public Object[][] getRegistrationData() throws Exception {
         return CSVUtils.getTestData("src/test/java/resources/registration.csv");
     }
+
     @Test(dataProvider = "registrationData")
     public void testRegistration(String firstName,
                                 String lastName,
@@ -40,19 +41,19 @@ public class RegistrationTests extends BaseTest {
 
         if (!firstName.isEmpty()) register.enterFirstName(firstName);
         if (!lastName.isEmpty()) register.enterLastName(lastName);
-        if (!email.isEmpty()) register.enterEmail(email);
-        if (!telephone.trim().isEmpty()) register.enterTelephone(telephone);
-        if (!password.isEmpty()) register.enterPassword(password);
-        if (!confirmPassword.isEmpty()) register.confirmPassword(confirmPassword);
 
-        if (agree.equalsIgnoreCase("true")) {
-            register.acceptPolicy();
-        }
-
-        register.clickContinue();
-
-        // Validation
         if (expected.equalsIgnoreCase("success")) {
+
+            if (!email.isEmpty()) register.enterEmail(email);
+            if (!telephone.isEmpty()) register.enterTelephone(telephone);
+            if (!password.isEmpty()) register.enterPassword(password);
+            if (!confirmPassword.isEmpty()) register.confirmPassword(confirmPassword);
+
+            if (agree.equalsIgnoreCase("true")) {
+                register.acceptPolicy();
+            }
+
+            register.clickContinue();
 
             AccountPage account = new AccountPage(driver);
 
@@ -60,20 +61,30 @@ public class RegistrationTests extends BaseTest {
             Assert.assertTrue(account.isLogoutDisplayed());
 
             account.clickLogout();
+            return;
+        }
 
-        } else {
+        if (expected.equalsIgnoreCase("validationFlow")) {
 
-            if (!emailError.isEmpty()) {
-                Assert.assertEquals(register.getEmailError(), emailError);
+            register.clickContinue();
+
+            Assert.assertEquals(register.getEmailError(), emailError);
+            Assert.assertEquals(register.getTelephoneError(), telephoneError);
+
+            register.enterEmail(email);
+            register.enterTelephone(telephone);
+
+            register.enterPassword(password);
+            register.confirmPassword(confirmPassword);
+
+            if (agree.equalsIgnoreCase("true")) {
+                register.acceptPolicy();
             }
 
-            if (!telephoneError.isEmpty()) {
-                Assert.assertEquals(register.getTelephoneError(), telephoneError);
-            }
+            register.clickContinue();
 
-            if (!passwordError.isEmpty()) {
-                Assert.assertEquals(register.getPasswordError(), passwordError);
-            }
+            Assert.assertEquals(register.getPasswordError(), passwordError);
+
         }
     }
 }

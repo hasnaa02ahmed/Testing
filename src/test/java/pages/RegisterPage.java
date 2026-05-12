@@ -1,14 +1,20 @@
 package pages;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class RegisterPage {
 
     WebDriver driver;
+    WebDriverWait wait;
 
     public RegisterPage(WebDriver driver){
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     By firstName = By.id("input-firstname");
@@ -21,10 +27,10 @@ public class RegisterPage {
     By privacyPolicy = By.name("agree");
     By continueBtn = By.xpath("//input[@value='Continue']");
 
-    By emailError = By.cssSelector("#input-email + .text-danger");
-    By telephoneError = By.cssSelector("#input-telephone + .text-danger");
-    By passwordError = By.cssSelector("#input-password + .text-danger");
-    
+    By emailError = By.xpath("//input[@id='input-email']/following-sibling::div[@class='text-danger']");
+    By telephoneError = By.xpath("//input[@id='input-telephone']/following-sibling::div[@class='text-danger']");
+    By passwordError = By.xpath("//input[@id='input-password']/following-sibling::div[@class='text-danger']");
+   
     public void enterFirstName(String value){
         driver.findElement(firstName).sendKeys(value);
     }
@@ -54,19 +60,28 @@ public class RegisterPage {
     }
 
     public void clickContinue(){
-        driver.findElement(continueBtn).click();
+
+        wait.until(
+            ExpectedConditions.elementToBeClickable(continueBtn)
+        ).click();
     }
 
     public String getEmailError() {
-        return driver.findElement(emailError).getText();
+        return wait.until(
+            ExpectedConditions.visibilityOfElementLocated(emailError)
+        ).getText();
     }
 
     public String getTelephoneError() {
-        return driver.findElement(telephoneError).getText();
+        return wait.until(
+            ExpectedConditions.visibilityOfElementLocated(telephoneError)
+        ).getText();
     }
 
     public String getPasswordError() {
-        return driver.findElement(passwordError).getText();
+        return wait.until(
+            ExpectedConditions.visibilityOfElementLocated(passwordError)
+        ).getText();
     }
 
 }

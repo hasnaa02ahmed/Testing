@@ -1,3 +1,3 @@
 firstName,lastName,email,telephone,password,confirmPassword,agree,expected,emailError,telephoneError,passwordError
 John,Doe,auto,1234567890,12345,12345,true,success,"","",""
-John,Doe,""," ",123,123,false,fail,"E-Mail Address does not appear to be valid!","Telephone must be between 3 and 32 characters!","Password must be between 4 and 20 characters!"
+John,Doe,john@test.com,123456789,123,123,true,validationFlow,"E-Mail Address does not appear to be valid!","Telephone must be between 3 and 32 characters!","Password must be between 4 and 20 characters!"
